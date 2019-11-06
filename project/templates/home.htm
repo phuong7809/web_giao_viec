@@ -1,0 +1,61 @@
+{% extends "base.htm" %}
+{% block content %}
+<style>
+    a{
+        color: red;
+    }
+</style>
+
+<div class="container">
+    <div class="table-responsive">
+            <table class="table table-striped" id="pro_Table">
+                <thead class="thead-dark">
+                    <tr style="background-color:#d1e0e0">
+                        <th scope="col">IDproject</th>
+                        <th scope="col">Name project</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Createdby</th>
+                        <!-- <th scope="col">Description</th> -->
+                        <th scope="col">Prior</th>
+                        <th scope="col">Participants</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pro in pros %}
+                    <tr>
+                        <td>{{pro.IDproject}} </td>
+                        <td>{{pro.name}}</td>
+                        <td>{{pro.startDate | date:'d/m/Y'}}</td>
+                        <td>{{pro.endDate | date:'d/m/Y'}}</td>
+                        <td>{{pro.createdby}}</td>
+                        <!-- <td>{{pro.description}}</td> -->
+                        <td>{{pro.prior}}</td>
+                        <td>{{pro.participants}}</td>
+                        <td >
+                            <a href="{%url 'edit_pro' pro.id %}"> <span class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></span></a> | 
+                            <a id="exampleModal" href="{%url 'delete_pro' pro.id %}"> <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+    </div>
+</div>
+
+</div>
+
+<script>
+    var editor;
+    $(document).ready(function () {
+
+        $('#pro_Table').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['print', 'excel'],
+        });
+        $('input').addClass('form-control');
+
+    });
+</script>
+{% endblock content %}

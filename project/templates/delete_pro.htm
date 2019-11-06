@@ -1,0 +1,9 @@
+{% extends "base.htm" %}
+{% block content %}
+<h1>Xóa dự án</h1>
+<form method="post">{% csrf_token %}
+    Are you sure you want to delete "{{ object}}" ?
+    <input type="submit" class="btn btn-primary" value="Delete" />
+</form>
+
+{% endblock content %}

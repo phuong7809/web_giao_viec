@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Title Page</title>
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Bootstrap JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        
+        <style>
+            body {
+                background-image: url('https://static1.squarespace.com/static/58160d5946c3c4f1cb200cb2/t/589118f16a4963f35f8e71fa/1485903119066/bgblur.jpg?format=1500w');
+                height: 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            .form {
+                margin-top: 100px;
+            }
+        
+            h1 {
+                text-align: center;
+                color: red;
+                margin-bottom: 0%;
+        
+            }
+            button {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+    
+        <div class="col-md-6 col-md-offset-3">
+        
+            <form action="" method="POST" class="form">
+                <div class="form-group">
+                    <h1>LOGIN</h1>
+                </div>
+        
+                {% load crispy_forms_tags %}
+                {% csrf_token %}
+                <div class="form-group">
+                    {{form  | crispy}}
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"> Login</button>
+                    <a href="{% url 'password_reset' %}">Forgot your password</a>
+                </div>
+                
+            </form>
+        </div>
+    </body>
+</html>

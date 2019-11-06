@@ -1,0 +1,56 @@
+{% extends "base.htm" %}
+{% block content %}
+<style>
+    #rcorners{
+        text-align:center;
+        color: red;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        font-size: 35px;
+    }
+</style>
+<div class="container">
+    <hr>
+    <div class="table-responsive">
+        <h2 id="rcorners">DỰ ÁN CỦA NHÓM</h2>
+        <table class="table table-striped" id="pro_Table">
+            <thead class="thead-dark">
+                <tr style="background-color:#d1e0e0">
+                    <th scope="col">Mã dự án</th>
+                    <th scope="col">Tên dự án</th>
+                    <th scope="col">Ngày bắt đầu</th>
+                    <th scope="col">Ngày kết thúc</th>
+                    <th scope="col">Người tạo</th>
+                    <th scope="col">Mô tả</th>
+                    <th scope="col">Mức ưu tiên</th>
+                    <th scope="col">Nhóm thực hiện</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pro in pros %}
+                <tr>
+                    <td>{{pro.IDproject}} </td>
+                    <td>{{pro.name}}</td>
+                    <td>{{pro.startDate | date:'d/m/Y'}}</td>
+                    <td>{{pro.endDate | date:'d/m/Y'}}</td>
+                    <td>{{pro.createdby}}</td>
+                    <td>{{pro.description}}</td>
+                    <td>{{pro.prior}}</td>
+                    <td>{{pro.participants}}</td>
+                </tr>
+                {% endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#pro_Table').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['print', 'excel'],
+        });
+        $('input').addClass('form-control');
+    });
+</script>
+{% endblock content%}

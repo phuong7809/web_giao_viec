@@ -1,0 +1,35 @@
+{% extends "base.htm" %}
+{% block content %}
+<style>
+    #rcorners1{
+        border-radius: 5px;
+        color: red;
+        background: yellow;
+        width: 310px;
+        height: 30px;
+        margin-bottom: 10px;
+        margin-left: 450px;
+    }
+</style>
+<div class="container">
+    <div id="rcorners1">
+        <h2>CHI TIẾT CÔNG VIỆC</h2>
+    </div>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">ID task</th>
+                <th scope="col">Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">{{tasks.ID_task}}</th>
+                <td style="width:80%;">{{tasks.note}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}

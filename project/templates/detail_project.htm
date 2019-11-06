@@ -1,0 +1,34 @@
+{% extends "base.htm" %}
+{% block content %}
+<div>
+    <b>CHI TIẾT DỰ ÁN</b>
+    <hr>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">ID project</th>
+            <th scope="col">Name</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Created by</th>
+            <th scope="col">Description</th>
+            <th scope="col">Prior</th>
+            <th scope="col">Participants</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{projects.IDproject}}</td>
+            <td>{{projects.name}}</td>
+            <td>{{projects.startDate}}</td>
+            <td>{{projects.endDate}}</td>
+            <td>{{projects.createdby}}</td>
+            <td>{{projects.description}}</td>
+            <td>{{projects.prior}}</td>
+            <td>{{projects.participants}}</td>
+           
+        </tr>
+    </tbody>
+</table>
+{% endblock content %}

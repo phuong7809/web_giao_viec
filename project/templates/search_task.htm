@@ -1,0 +1,37 @@
+{% extends "base.htm" %}
+{% block content %}
+<table class="table table-bordered">
+    {% for tasks in list_task %}
+    <thead>
+        <tr>
+            <th scope="col">ID TASK</th>
+            <th scope="col">Name task</th>
+            <th scope="col">Name project</th>
+            <th scope="col">Note</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Responsible person</th>
+            <th scope="col">Supervisor</th>
+            <th scope="col">Status</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td>{{tasks.ID_task}}</td>
+            <td>{{tasks.name_task}}</td>
+            <td>{{tasks.project}}</td>
+            <td>{{tasks.note}}</td>
+            <td>{{tasks.startDate}}</td>
+            <td>{{tasks.endDate}}</td>
+            <td>{{tasks.responsible_person}}</td>
+            <td>{{tasks.supervisor}}</td>
+            <td>{{tasks.status}}</td>
+        </tr>
+
+    </tbody>
+    {% endfor%}
+</table>
+
+{% endblock content %}

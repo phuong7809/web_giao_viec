@@ -1,0 +1,133 @@
+{% extends "base.htm" %}
+{% block content %}
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="input-group">
+            <input type="text" id="txtsearch" name="txtsearch" class="form-control" placeholder="Search">
+            <div class="input-group-btn">
+                <button id="btn" class="btn btn-default" type="submit">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+    <!-- <form action="" method="GET">
+        <input id="txtsearch" name="txtsearch" type="text" placeholder="Search..." class="form-control">
+        <span><button id="btn" type="submit">Search</button></span>
+        
+    </form> -->
+    <br>
+    <hr>
+
+    <table class="table" id="myTable">
+        <thead class="thead-dark">
+            <tr style="background-color:#d1e0e0">
+                <th scope="col">ID TASK</th>
+                <th scope="col">Name task</th>
+                <th scope="col">Name project</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Responsible person</th>
+                <th scope="col">Supervisor</th>
+                <th scope="col">Status</th>
+                <th scope="col">Percent finish</th>
+                <!-- <th scope="col" style="padding-bottom: 30px;">Action</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for tasks in tasks_all %}
+            {% if tasks.endDate.date == time_now %}
+            <tr class="group" style="background-color: yellow">
+                <td><a href="{% url 'detail_task' tasks.id%}">{{tasks.ID_task}}</a> </td>
+                <td>{{tasks.name_task}}</td>
+                <td>{{tasks.project}}</td>
+                <td>{{tasks.startDate | date:'d/m/Y'}}</td>
+                <td class="enddate">{{tasks.endDate | date:'d/m/Y'}}</td>
+                <td>{{tasks.responsible_person}}</td>
+                <td>{{tasks.supervisor}}</td>
+                <td>{{tasks.status}}</td>
+                <td>{{tasks.muc_do_hoan_thanh}}</td>
+            </tr>
+            {% elif tasks.endDate.date < time_now and tasks.status == 'Processing' %}
+            <tr class="group" style="background-color: red">
+                <td><a href="{% url 'detail_task' tasks.id%}">{{tasks.ID_task}}</a> </td>
+                <td>{{tasks.name_task}}</td>
+                <td>{{tasks.project}}</td>
+                <td>{{tasks.startDate | date:'d/m/Y'}}</td>
+                <td class="enddate">{{tasks.endDate | date:'d/m/Y'}}</td>
+                <td>{{tasks.responsible_person}}</td>
+                <td>{{tasks.supervisor}}</td>
+                <td>{{tasks.status}}</td>
+                <td>{{tasks.muc_do_hoan_thanh}}</td>
+            </tr>
+            {% elif tasks.endDate.date < time_now and tasks.status == 'Finish' %}
+            <tr class="group" style="background-color: rgb(173, 230, 230)">
+                <td><a href="{% url 'detail_task' tasks.id%}">{{tasks.ID_task}}</a> </td>
+                <td>{{tasks.name_task}}</td>
+                <td>{{tasks.project}}</td>
+                <td>{{tasks.startDate | date:'d/m/Y'}}</td>
+                <td class="enddate">{{tasks.endDate | date:'d/m/Y'}}</td>
+                <td>{{tasks.responsible_person}}</td>
+                <td>{{tasks.supervisor}}</td>
+                <td>{{tasks.status}}</td>
+                <td>{{tasks.muc_do_hoan_thanh}}</td>
+            </tr>
+            {% else %}
+            <tr class="group">
+                <td><a href="{% url 'detail_task' tasks.id%}">{{tasks.ID_task}}</a> </td>
+                <td>{{tasks.name_task}}</td>
+                <td>{{tasks.project}}</td>
+                <td class="enddate">{{tasks.startDate | date:'d/m/Y'}}</td>
+                <td>{{tasks.endDate | date:'d/m/Y'}}</td>
+                <td>{{tasks.responsible_person}}</td>
+                <td>{{tasks.supervisor}}</td>
+                <td>{{tasks.status}}</td>
+                <td>{{tasks.muc_do_hoan_thanh}}</td>
+            </tr>
+            {% endif %}
+            {% endfor%}
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['print', 'excel'],
+        });
+
+        $('input').addClass('form-control');
+    });
+</script>
+
+<script>
+    $('td.enddate').each(function () {
+        // alert($(this).text());
+    })
+    $(document).ready(function () {
+        $('#txtsearch').on('input', function (event) {
+            // $("#row_all").find("*").attr("disabled", "disabled");
+            // $("#row_all").removeAttr("disabled");
+            // $("#row_all").attr("disabled", true);
+            $("#row_all").hide();
+            $.ajax({
+                url: '/ajax/search_task/',
+                dataType: 'json',
+                success: function (data) {
+                    $("#row_all").hide();
+                    console.log(data.name_task)
+                    $('#txtsearch').autocomplete({
+                        source: data.name_task,
+
+                    })
+                }
+            });
+        });
+    });
+
+</script>
+
+{% endblock content %}

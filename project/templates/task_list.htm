@@ -1,0 +1,268 @@
+{% extends "base.htm" %}
+{% block content %}
+<style>
+    div {
+        text-align: center;
+    }
+
+    table,
+    th {
+        text-align: center;
+    }
+
+    b {
+        font-size: 20px;
+    }
+
+    #rcorners1 {
+        border-radius: 5px;
+        color: red;
+        background: yellow;
+        width: 160px;
+        height: 30px;
+        margin-bottom: 10px;
+        margin-left: 550px;
+    }
+
+    #rcorners2 {
+        border-radius: 5px;
+        color: red;
+        background: yellow;
+        width: 300px;
+        height: 30px;
+        margin-bottom: 10px;
+        margin-left: 500px;
+    }
+
+    #rcorners3 {
+        border-radius: 5px;
+        color: red;
+        background: yellow;
+        width: 300px;
+        height: 30px;
+        margin-bottom: 10px;
+        margin-left: 500px;
+    }
+</style>
+
+<form action="" method="post">
+    <div class="group" id="rcorners1"><b>CÔNG VIỆC MỚI</b></div>
+    <table class="table table-bordered" id="table1">
+         <thead>
+        <tr style="background-color:#d1e0e0">
+            <th scope="col" style="padding-bottom: 25px;">Mã công việc</th>
+            <th scope="col" >Tên công việc</th>
+            <th scope="col" style="padding-bottom: 25px;">Tên dự án</th>
+            <th scope="col" style="padding-bottom: 25px;">Ghi chú</th>
+            <th scope="col">Ngày bắt đầu</th>
+            <th scope="col">Ngày kết thúc</th>
+            <th scope="col">Người thực hiện</th>
+            <th scope="col">Người giám sát</th>
+            <th scope="col">Trạng thái</th>
+            <th colspan="2" style="padding-bottom: 25px;">Hành động</th>
+
+        </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks_new %}
+            <tr>
+                <td>{{task.ID_task}}</td>
+                <td>{{task.name_task}}</td>
+                <td>{{task.project}}</td>
+                <td style="width:30%;">{{task.note}}</td>
+                <td>{{task.startDate | date:'d/m/Y'}}</td>
+                <td>{{task.endDate | date:'d/m/Y'}}</td>
+                <td>{{task.responsible_person}}</td>
+                <td>{{task.supervisor}}</td>
+                <td>{{task.status}}</td>
+                <td class="check">
+                    <button type="button" id="yes{{task.id}}" class="btn btn-success" data-toggle="modal"
+                        data-target="#myModal">Confirm</button>
+                </td>
+                <td class="check">
+                    <button type="button" id="no{{task.id}}" class="btn btn-danger">Reject</button>
+                </td>
+                <div class="modal" id="myModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Message</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <p>Bạn vừa nhận công việc <b>{{task.name_task}}</b> nó đang diễn ra</p>
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="12" class="text-center bg-warning">Không có công việc nào</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+
+    <div class="group" id="rcorners2"><b>CÔNG VIỆC ĐANG THỰC HIỆN</b></div>
+    <table class="table table-bordered" id="table2">
+        <thead>
+            <tr style="background-color:#d1e0e0">
+                <th scope="col" style="padding-bottom: 25px;">Mã công việc</th>
+                <th scope="col">Tên công việc</th>
+                <th scope="col">Tên dự án</th>
+                <th scope="col" style="padding-bottom: 25px;">Ghi chú</th>
+                <th scope="col">Ngày bắt đầu</th>
+                <th scope="col">Ngày kết thúc</th>
+                <th scope="col">Người thực hiện</th>
+                <th scope="col">Người giám sát</th>
+                <th scope="col" style="padding-bottom: 25px;">Trạng thái</th>
+                <th scope="col">Mức độ hoàn thành</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            {% for task in tasks_process %}
+                {% if task.endDate.date == time_now %}
+                    <tr style="background-color: yellow">
+                        <td name="{{task.id}}"><a href="{% url 'task_edit' task.id %}">{{task.ID_task}}</a></td>
+                        <td>{{task.name_task}}</td>
+                        <td>{{task.project}}</td>
+                        <td style="width:30%;">{{task.note}}</td>
+                        <td>{{task.startDate | date:'d/m/Y'}}</td>
+                        <td>{{task.endDate | date:'d/m/Y'}}</td>
+                        <td>{{task.responsible_person}}</td>
+                        <td>{{task.supervisor}}</td>
+                        <td>{{task.status}}</td>
+                        <td>{{task.muc_do_hoan_thanh}}</td>
+                    </tr>
+                {% elif task.endDate.date < time_now and task.status == 'Processing' %}
+                    <tr style="background-color: red">
+                        <td name="{{task.id}}"><a href="{% url 'task_edit' task.id %}">{{task.ID_task}}</a></td>
+                        <td>{{task.name_task}}</td>
+                        <td>{{task.project}}</td>
+                        <td style="width:30%;">{{task.note}}</td>
+                        <td>{{task.startDate | date:'d/m/Y'}}</td>
+                        <td>{{task.endDate | date:'d/m/Y'}}</td>
+                        <td>{{task.responsible_person}}</td>
+                        <td>{{task.supervisor}}</td>
+                        <td>{{task.status}}</td>
+                        <td>{{task.muc_do_hoan_thanh}}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td name="{{task.id}}"><a href="{% url 'task_edit' task.id %}">{{task.ID_task}}</a></td>
+                        <td>{{task.name_task}}</td>
+                        <td>{{task.project}}</td>
+                        <td style="width:30%;">{{task.note}}</td>
+                        <td>{{task.startDate | date:'d/m/Y'}}</td>
+                        <td>{{task.endDate | date:'d/m/Y'}}</td>
+                        <td>{{task.responsible_person}}</td>
+                        <td>{{task.supervisor}}</td>
+                        <td>{{task.status}}</td>
+                        <td>{{task.muc_do_hoan_thanh}}</td>
+                    </tr>
+                {%endif%}
+            {% empty %}
+            <tr>
+                <td colspan="12" class="text-center bg-warning">Không có công việc nào</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="group" id="rcorners3"><b>CÔNG VIỆC ĐÃ HOÀN THÀNH</b></div>
+    <table class="table table-bordered" id="table3">
+        <thead>
+            <tr style="background-color:#d1e0e0">
+                <th scope="col" style="padding-bottom: 25px;">Mã công việc</th>
+                <th scope="col">Tên công việc</th>
+                <th scope="col">Tên dự án</th>
+                <th scope="col" style="padding-bottom: 25px;">Ghi chú</th>
+                <th scope="col">Ngày bắt đầu</th>
+                <th scope="col">Ngày kết thúc</th>
+                <th scope="col">Người thực hiện</th>
+                <th scope="col">Người giám sát</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Mức độ hoàn thành</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks_finish %}
+            <tr>
+                <td>{{task.ID_task}}</td>
+                <td>{{task.name_task}}</td>
+                <td>{{task.project}}</td>
+                <td style="width:30%;">{{task.note}}</td>
+                <td>{{task.startDate | date:'d/m/Y'}}</td>
+                <td>{{task.endDate | date:'d/m/Y'}}</td>
+                <td>{{task.responsible_person}}</td>
+                <td>{{task.supervisor}}</td>
+                <td>{{task.status}}</td>
+                <td>{{task.muc_do_hoan_thanh}}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="12" class="text-center bg-warning">Không có công việc nào</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</form>
+
+<script>
+    $(document).ready(function () {
+    
+        $('#table2').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['print', 'excel'],
+        });
+        $('#table3').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['print', 'excel'],
+        });
+        $('input').addClass('form-control');
+    });
+</script>
+
+<script>
+
+    $(document).ready(function (event) {
+        $(":button").click(function (event) {
+            let status = event.target.id;
+            console.log(status)
+            let token = '{{csrf_token}}';
+            $.ajax({
+                headers: { "X-CSRFToken": token },
+                url: '/ajax_get_status/',
+                method: 'POST',
+                data: {
+                    'status': status,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    setTimeout(function () {
+                        location.reload(1);
+                    }, 2000);
+                    // location.reload(true);
+                }
+            })
+
+        })
+    })
+</script>
+{% endblock content %}

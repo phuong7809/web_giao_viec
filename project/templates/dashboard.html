@@ -1,0 +1,139 @@
+{% extends "base.htm" %}
+{% block content %}
+<style>
+    /* body {
+        background-image: url('http://thuthuatphanmem.vn/uploads/2018/05/18/hinh-nen-may-tinh-hd-la-phong-xanh-dep_024422517.jpg');
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    } */
+    .dash {
+        padding-top: 20px
+    }
+
+    .panel-title {
+        text-align: center;
+    }
+
+    .panel-body {
+        text-align: center;
+    }
+    p{
+        font-size: 20px;
+    }
+    h1{
+        text-align:center;
+        color: red;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        font-size: 60px;
+    }
+    
+    
+</style>
+
+<div class="container">
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h1>DASHBOARD</h1>
+        <div class="dash">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Công việc mới</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p class="size">{{count_task_new}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Công việc đang thực hiện</h3>
+                    </div>
+                    <p class="panel-body">
+                        {{count_task_process}}
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Công việc đã hoàn thành</h3>
+                    </div>
+                    <p class="panel-body">
+                        {{count_task_finish}}
+                    </p>
+                </div>
+            </div>
+            
+    </div>
+    
+</div>
+<div class="chart">
+    <div class="col-sm-4 col-md-offset-1">
+        <canvas id="myChart" width="200" height="200"></canvas>
+    </div>
+    <div class="col-sm-4 col-md-offset-2">
+        <canvas id="myChart2" width="100" height="100"></canvas>
+    </div>
+</div>
+
+
+
+<script>
+    $.ajax({
+        method: "GET",
+        url: '/ajax/chartjs/',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.label,
+                    datasets: [{
+                        label: 'Nhiệm vụ đang triển khai',
+                        data: data.task_processing,
+                        backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", 
+                                        "#4D5360",'#80ccff','#ffff4d','#66ffb3','#73e600','#408000'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Công việc đang triển khai'
+                    }
+
+                }
+            });
+
+
+            var ctx = document.getElementById('myChart2').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.label,
+                    datasets: [{
+                        label: '# of Votes',
+                        data: data.task_finish,
+                        backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360",
+                                        '#80ccff', '#ffff4d', '#66ffb3', '#73e600', '#408000'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Công việc đã hoàn thành'
+                    }
+                }
+            });
+        }
+    })
+</script>
+{% endblock content %}

@@ -1,0 +1,64 @@
+{% extends "base.htm" %}
+{%  load crispy_forms_tags %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form|crispy}}
+            <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <label for="">Mức độ hoàn hoàn thành công việc</label>
+                <input type="text" class="test" name="{{object.id}}" id="{{object.id}}">
+            </div> -->
+            <button type="submit" class="btn btn-success" name="submit"> Save edit task</button>
+            <a href="{% url 'task_list_admin' %}" class="btn btn-primary">Cancel</a>
+        </form>
+    </div>
+    <div class="col-sm-2"></div>
+</div>
+<script>
+    $(document).ready(function () {
+        let token = '{{csrf_token}}';
+        let percent = $('#id_muc_do_hoan_thanh').val()
+        $("#id_muc_do_hoan_thanh").ionRangeSlider({
+            type: "single",
+            min: 0,
+            max: 100,
+            from: percent,
+        });
+        $(".test").on("change", function (event) {
+            let token = '{{csrf_token}}';
+            var $inp = $(this);
+            var timeline = $inp.prop("value");
+            let id_task = event.target.id;
+            print(id_task)
+            $.ajax({
+                headers: { "X-CSRFToken": token },
+                // url: "/task_edit/object.id/",
+                url: "/ajax_get_timeline/",
+                method: 'POST',
+                data: {
+                    'id_task': id_task,
+                    'timeline': timeline,
+                },
+                dataType: 'json',
+                success: function () { }
+            })
+        });
+        // $('#submit').click(function(){
+        //     let token = '{{csrf_token}}';
+        //     $.ajax({
+        //         headers: { "X-CSRFToken": token },
+        //         url :'/ajax_get_timeline/',
+        //         method: 'POST',
+        //         data :{
+        //              click: true,
+        //         },
+        //         success: function () {}
+        //     })
+        // })
+
+    })
+</script>
+{% endblock content %}

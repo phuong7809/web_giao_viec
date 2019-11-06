@@ -1,0 +1,28 @@
+{% extends "base.htm" %}
+{% block content %}
+<style>
+    #img1 {
+        width: 300px;
+        left: 300px;
+    }
+    #img2 {
+        width: 300;
+        right: 300;
+    }
+    h1 {
+        color: red;
+        text-align: center;
+    }
+</style>
+<div class="container">
+    <div>
+        <h1>Sorry, you are not allowed to access this page</h1>
+    </div>
+    <hr>
+    <div>
+        <a href="{% url 'task_list_admin' %} "><span class="fa fa-arrow-left"></span> BACK</a>
+    </div>
+</div>
+
+
+{% endblock content %}

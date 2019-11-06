@@ -1,0 +1,59 @@
+{% extends "base.htm" %}
+{%  load crispy_forms_tags %}
+{% block content %}
+<style>
+    h1{
+        text-align: center;
+        color: red;
+        font-size: 40px;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    }
+</style>
+<div class="row">
+    <h1>Update dự án</h1>
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <form method="post">
+            {% csrf_token %}
+            {{form|crispy}}
+            <button type="submit" class="btn btn-success"> UPDATE</button>
+            <!-- <a href="{% url 'home' %}" class="btn btn-primary">Cancel</a> -->
+        </form>
+    </div>
+    <div class="col-sm-2"></div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#id_startDate').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+        });
+
+
+        // $('#id_startDate').on('dp.change', function () {
+        //     let endtDate = $('#id_startDate').val();
+        //     alert(endtDate);
+
+        $("#id_startDate").on("dp.change", function (e) {
+            $('#id_endDate').datetimepicker({
+                minDate: e.date,
+                format: 'YYYY-MM-DD HH:mm',
+                useCurrent: false,
+            })
+
+            $("#id_endDate").on("dp.change", function (e) {
+                // $("#id_endDate").datetimepicker({
+                //     format: 'YYYY-MM-DD HH:mm',
+                //     useCurrent: false,
+                // });
+                $('#id_startDate').datetimepicker({
+                    maxdate: e.date,
+                   format:'YYYY-MM-DD HH:mm',
+                })
+            });
+        });
+
+
+    })
+</script>
+
+{% endblock content %}

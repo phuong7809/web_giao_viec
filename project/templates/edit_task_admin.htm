@@ -1,0 +1,29 @@
+{% extends 'base.htm' %}
+{%  load crispy_forms_tags %}
+{% block content %}
+
+<div class="col-xs-8 col-md-offset-2 ">
+    <form action="" method="post">
+        {% csrf_token %}
+        <h1>Update công việc</h1>
+        <hr>
+        {{form|crispy}}
+        <button type="submit" class="btn btn-success" name="submit"> Save edit task</button>
+        <a href="{% url 'task_list_admin' %}" class="btn btn-primary">Cancel</a>
+    </form>
+    
+</div>
+
+<script>
+    var start_date = $('#id_startDate').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+        });
+
+        var end_date = $("#id_endDate").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            useCurrent: false,
+        });
+        
+</script>
+
+{% endblock content %}

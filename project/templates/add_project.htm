@@ -1,0 +1,46 @@
+{% extends "base.htm" %}
+{%  load crispy_forms_tags %}
+{% block content %}
+<style>
+    h2{
+        text-align: center;
+        color: red;
+        font-size: 40px;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    }
+</style>
+<div class="col-sm-8 col-sm-offset-2">
+    <h2>TẠO DỰ ÁN</h2>
+    <form action="" method="post" enctype="multipart/form-data">
+        
+        {% csrf_token %}
+        {{ project_form|crispy }}
+        <p>
+            <input type="submit" class="btn btn-success" value="SAVE">
+            
+            <a href="{% url 'home' %}" class="btn btn-danger">CANCEL</a>
+        </p>
+    </form>
+</div>
+<script>
+
+    $('#id_startDate').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm',
+    });
+
+    $("#id_endDate").datetimepicker({
+        format: 'YYYY-MM-DD HH:mm',
+        useCurrent: false
+    });
+    $("#id_startDate").on("dp.change", function (e) {
+        $('#id_endDate').data("DateTimePicker").minDate(e.date);
+    });
+
+    $("#id_endDate").on("dp.change", function (e) {
+        $('#id_startDate').data("DateTimePicker").maxDate(e.date);
+    });
+</script>
+<script>
+
+</script>
+{% endblock content %}
